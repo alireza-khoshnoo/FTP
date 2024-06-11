@@ -17,7 +17,7 @@ namespace ConsoleApp1
 
     {
 
-       public static void doChat(Socket clientSocket, string n)
+        // public static void doChat(Socket clientSocket, string n)
 
         // {
         //     Console.WriteLine("getting file....");

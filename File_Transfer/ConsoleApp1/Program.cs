@@ -17,21 +17,44 @@ namespace ConsoleApp1
 
     {
 
-        public static void doChat(Socket clientSocket,string n)
+       public static void doChat(Socket clientSocket, string n)
 
+        // {
+        //     Console.WriteLine("getting file....");
+        //     byte[] clientData = new byte[1024 * 5000];
+        //     int receivedBytesLen = clientSocket.Receive(clientData);
+        //     int fileNameLen = BitConverter.ToInt32(clientData, 0);
+        //     string fileName = Encoding.ASCII.GetString(clientData, 4, fileNameLen);
+        //     BinaryWriter bWrite = new BinaryWriter(File.Open(fileName + n, FileMode.Create));
+        //     bWrite.Write(clientData, 4 + fileNameLen, receivedBytesLen - 4 - fileNameLen);
+        //     bWrite.Close();
+        //     clientSocket.Close();
+
+        //     //[0]filenamelen[4]filenamebyte[*]filedata   
+
+        // }
+
+        public static void doChat(Socket clientSocket, string n)
         {
-            Console.WriteLine("getting file....");
+            Console.WriteLine("getting file2....");
             byte[] clientData = new byte[1024 * 5000];
             int receivedBytesLen = clientSocket.Receive(clientData);
             int fileNameLen = BitConverter.ToInt32(clientData, 0);
             string fileName = Encoding.ASCII.GetString(clientData, 4, fileNameLen);
-            BinaryWriter bWrite = new BinaryWriter(File.Open(fileName + n, FileMode.Create));
+
+            // Get the file extension
+            string fileExt = Path.GetExtension(fileName);
+
+            // Remove the extension from the original filename
+            string baseFileName = Path.GetFileNameWithoutExtension(fileName);
+
+            // Construct the new filename with the number before the extension
+            string newFileName = $"{baseFileName} {n}{fileExt}";
+
+            BinaryWriter bWrite = new BinaryWriter(File.Open(newFileName, FileMode.Create));
             bWrite.Write(clientData, 4 + fileNameLen, receivedBytesLen - 4 - fileNameLen);
             bWrite.Close();
             clientSocket.Close();
-
-            //[0]filenamelen[4]filenamebyte[*]filedata   
-
         }
 
 
